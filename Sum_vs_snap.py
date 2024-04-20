@@ -6,14 +6,14 @@ from HeadFile import training_data_eig_lu_eig_class,training_data_lu_reg,trainin
 
 
 from keras.datasets import mnist
-from keras.models import Sequential
+from tensorflow.keras.models import Sequential
 from keras.layers import Dense, Dropout
 
 from keras.models import load_model
 
 from keras.optimizers import RMSprop
 # from sklearn import preprocessing
-import keras.backend.tensorflow_backend as KTF
+import tensorflow.keras.backend as KTF
 import tensorflow as tf
 from keras.utils import np_utils
 import os
