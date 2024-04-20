@@ -13,13 +13,21 @@ from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.utils import to_categorical
 import os
 
-# 你的其余代码
 
+# 指定使用的 GPU 编号，"0" 表示使用编号为0的 GPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-config = tf.ConfigProto()
-config.gpu_options.allow_growth=True   #不全部占满显存, 按需分配
-sess = tf.Session(config=config)
-KTF.set_session(sess)
+
+# 获取系统中的 GPU 列表
+gpus = tf.config.experimental.list_physical_devices('GPU')
+
+# 如果系统中有 GPU 存在，设置其内存按需增长
+if gpus:
+    try:
+        # 设置 TensorFlow 为增长式占用内存模式
+        tf.config.experimental.set_memory_growth(gpus[0], True)
+    except RuntimeError as e:
+        # 在设置内存增长之前必须在程序启动的时候就进行设置，否则会报错
+        print("RuntimeError: ", e)
 
 ### =================== System Parameters ================
 
