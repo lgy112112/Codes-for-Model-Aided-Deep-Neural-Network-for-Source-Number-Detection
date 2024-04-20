@@ -1,23 +1,41 @@
 
+# from __future__ import division
+# import numpy as np
+# import math
+# import cmath
+# import matplotlib.pyplot as plt
+# import scipy.io as sio
+# import keras
+# from keras.layers import   Conv2D,MaxPool2D,Dense,Flatten,BatchNormalization
+
+# import keras
+# from keras.datasets import mnist
+# from keras.models import Sequential
+# from keras.layers import Dense, Dropout
+# from keras.optimizers import RMSprop
+# # from sklearn import preprocessing
+# import keras.backend.tensorflow_backend as KTF
+# import tensorflow as tf
+# from keras.utils import np_utils
+# from scipy.linalg import cholesky
+
 from __future__ import division
 import numpy as np
 import math
 import cmath
 import matplotlib.pyplot as plt
 import scipy.io as sio
-import keras
-from keras.layers import   Conv2D,MaxPool2D,Dense,Flatten,BatchNormalization
-
-import keras
-from keras.datasets import mnist
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-from keras.optimizers import RMSprop
-# from sklearn import preprocessing
-import keras.backend.tensorflow_backend as KTF
 import tensorflow as tf
-from keras.utils import np_utils
+from tensorflow.keras.layers import Conv2D, MaxPool2D, Dense, Flatten, BatchNormalization
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.optimizers import RMSprop
+# from sklearn import preprocessing
+import tensorflow.keras.backend as K
+from tensorflow.keras.utils import to_categorical
 from scipy.linalg import cholesky
+
 
 Mapping = {1: np.array([[1]]), 2: np.array([[0.2, 0.4], [0.4, 1]]), 3: np.array([[0.2, 0.4, 0.1], [0.4, 1, 0.1], [0.1, 0.1, 1]]),
 		   4: np.array([[0.2, 0.4, 0.1, 0.2], [0.4, 1, 0.1, 0.3], [0.1, 0.1, 1, 0.3], [0.2, 0.3, 0.3, 1]]),
@@ -320,7 +338,7 @@ def sample_generation_eig_lu_reg_class_angle_point(angl,SNRdB,number_antenna,sna
 	eig_values_D,_=np.linalg.eig(Rx)
 	eig_values=-np.sort(-np.real(eig_values_D))/(10*SNR)
 
-	number_source_label = np_utils.to_categorical(number_source, num_classes=number_antenna)
+	number_source_label = to_categorical(number_source, num_classes=number_antenna)
 	return eig_values,U_norm, number_source, number_source_label
 
 
@@ -421,7 +439,7 @@ def sample_generation_eig_lu_reg_class_coherent(SNRdB,number_antenna,snap_time):
 	eig_values_D,_=np.linalg.eig(Rave)
 	eig_values=-np.sort(-np.real(eig_values_D))/(10*SNR)
 
-	number_source_label = np_utils.to_categorical(number_source, num_classes=number_antenna//2)
+	number_source_label = to_categorical(number_source, num_classes=number_antenna//2)
 	return eig_values,U_norm, number_source, number_source_label
 
 def training_data_eig_lu_eig_class(SNRdB,total_samples,number_antenna,snap_time):
@@ -462,7 +480,7 @@ def sample_generation_eig_lu_reg_class(SNRdB,number_antenna,snap_time):
 	eig_values_D,_=np.linalg.eig(Rx)
 	eig_values=-np.sort(-np.real(eig_values_D))/(10*SNR)
 
-	number_source_label = np_utils.to_categorical(number_source, num_classes=number_antenna)
+	number_source_label = to_categorical(number_source, num_classes=number_antenna)
 	return eig_values,U_norm, number_source, number_source_label
 
 def training_data_cov_eig_lu_eig_class(SNRdB,total_samples,number_antenna,snap_time):
@@ -545,7 +563,7 @@ def sample_generation_cov_eig_lu_reg_class(SNRdB,number_antenna,snap_time):
 	eig_values_D,_=np.linalg.eig(Rx)
 	eig_values=-np.sort(-np.real(eig_values_D))/(10*SNR)
 	Rx_full=np.stack((np.real(Rx),np.imag(Rx)),axis=2)/(Power_mag)
-	number_source_label = np_utils.to_categorical(number_source, num_classes=number_antenna)
+	number_source_label = to_categorical(number_source, num_classes=number_antenna)
 	return eig_values,Rx_full, number_source, number_source_label
 
 def training_data_org_eig_class_coherent_all_snr(total_samples,number_antenna,snap_time):
@@ -634,7 +652,7 @@ def sample_generation_org_reg_class_coherent(SNRdB,number_antenna,snap_time):
 	eig_values_D,_=np.linalg.eig(Rave)
 	eig_values=-np.sort(-np.real(eig_values_D))/(10*SNR)
 
-	number_source_label = np_utils.to_categorical(number_source, num_classes=number_antenna)
+	number_source_label = to_categorical(number_source, num_classes=number_antenna)
 	return eig_values,Rx_full, number_source, number_source_label
 
 
@@ -726,7 +744,7 @@ def sample_generation_org_eig_lu_reg_class(SNRdB,number_antenna,snap_time):
 
 	Rx_full=np.stack((np.real(x),np.imag(x)),axis=2)/(Power_mag)
 
-	number_source_label = np_utils.to_categorical(number_source, num_classes=number_antenna)
+	number_source_label = to_categorical(number_source, num_classes=number_antenna)
 	return eig_values,Rx_full, number_source, number_source_label
 
 
@@ -1702,7 +1720,7 @@ def sample_generation_class_lu(SNRdB,number_antenna,snap_time):
 	Rx=(1./snap_time)*np.dot(x,x_her)
 	U = cholesky(Rx, lower=False)
 	U_norm=np.linalg.norm(U, axis=1, keepdims=False)/(10*SNR)
-	number_source_label = np_utils.to_categorical(number_source, num_classes=number_antenna)
+	number_source_label = to_categorical(number_source, num_classes=number_antenna)
 	return U_norm, number_source_label
 
 def training_data_eig_class(SNRdB,total_samples,number_antenna,snap_time):
@@ -1744,7 +1762,7 @@ def sample_generation_class(SNRdB,number_antenna,snap_time):
 	Rx=(1./snap_time)*np.dot(x,x_her)
 	eig_values_D,_=np.linalg.eig(Rx)
 	eig_values=-np.sort(-np.real(eig_values_D))/(10*SNR)
-	number_source_label = np_utils.to_categorical(number_source, num_classes=number_antenna)
+	number_source_label = to_categorical(number_source, num_classes=number_antenna)
 	return eig_values, number_source_label
 
 
