@@ -1,22 +1,20 @@
-import keras
+import tensorflow as tf
+from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io as scio
-from HeadFile import training_data_eig_lu_eig_class,training_data_lu_reg,training_data_eig_reg,training_data_lu_class,MDL_MMSE,training_data_eig_class,MDL_subfun_random_angle,training_data_reg_source_angle_same,training_data_reg_all_snr
+from HeadFile import training_data_eig_lu_eig_class, training_data_lu_reg, training_data_eig_reg, training_data_lu_class, MDL_MMSE, MDL_subfun_random_angle, training_data_reg_source_angle_same, training_data_reg_all_snr
 
-
-from keras.datasets import mnist
-from tensorflow.keras.models import Sequential
-from keras.layers import Dense, Dropout
-
-from keras.models import load_model
-
-from keras.optimizers import RMSprop
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.optimizers import RMSprop
 # from sklearn import preprocessing
-import tensorflow.keras.backend as KTF
-import tensorflow as tf
-# from keras.utils import np_utils
+from tensorflow.keras.utils import to_categorical
 import os
+
+# 你的其余代码
+
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 config = tf.ConfigProto()
 config.gpu_options.allow_growth=True   #不全部占满显存, 按需分配
