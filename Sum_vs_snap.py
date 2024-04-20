@@ -15,7 +15,7 @@ from keras.optimizers import RMSprop
 # from sklearn import preprocessing
 import tensorflow.keras.backend as KTF
 import tensorflow as tf
-from keras.utils import np_utils
+# from keras.utils import np_utils
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 config = tf.ConfigProto()
