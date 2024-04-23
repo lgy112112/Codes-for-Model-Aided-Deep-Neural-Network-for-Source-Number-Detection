@@ -22,12 +22,12 @@ gpus = tf.config.experimental.list_physical_devices('GPU')
 
 # 如果系统中有 GPU 存在，设置其内存按需增长
 if gpus:
-    try:
-        # 设置 TensorFlow 为增长式占用内存模式
-        tf.config.experimental.set_memory_growth(gpus[0], True)
-    except RuntimeError as e:
-        # 在设置内存增长之前必须在程序启动的时候就进行设置，否则会报错
-        print("RuntimeError: ", e)
+	try:
+		# 设置 TensorFlow 为增长式占用内存模式
+		tf.config.experimental.set_memory_growth(gpus[0], True)
+	except RuntimeError as e:
+		# 在设置内存增长之前必须在程序启动的时候就进行设置，否则会报错
+		print("RuntimeError: ", e)
 
 ### =================== System Parameters ================
 
@@ -35,9 +35,9 @@ if gpus:
 number_antenna = 10   # Antenna number
 total_samples = 10000
 test_times=10
-# Snap_range=[int(np.round(np.power(10,snap) )) for snap in np.arange(1.2,4.7,0.2)]
+Snap_range=[int(np.round(np.power(10,snap) )) for snap in np.arange(1.2,4.7,0.2)]
 # Snap_range=[int(np.round(np.power(10,snap) )) for snap in np.arange(1.2,3.,0.2)]
-Snap_range=[int(np.round(np.power(10,snap) )) for snap in np.arange(1.0,1.2,0.2)]
+# Snap_range=[int(np.round(np.power(10,snap) )) for snap in np.arange(1.0,1.2,0.2)]
 
 Hidden_units = [32,16]
 N_LAYERS = len(Hidden_units)
@@ -46,7 +46,7 @@ n_output_reg =  1
 learning_rate = 0.001
 mean_error_train = []
 batch_size = 128
-epoch = 400
+epoch = 10
 n_output_cla=number_antenna
 
 '''varying paprameters'''
@@ -141,6 +141,9 @@ for snap_i in Snap_range:
 	acc_lu_reg_vs_snap.append(accuracy_lu_reg)
 	acc_lu_cla_vs_snap.append(accuracy_lu_class)
 
+print("Snap_range 长度: ", len(Snap_range))
+print("ERNet 准确率列表长度: ", len(acc_eig_reg_vs_snap))
+print("ECNet 准确率列表长度: ", len(acc_eig_cla_vs_snap))
 	# print('Model is saving...')
 	# save_path_eig_reg = 'E:\CODE_SOURECE_NUMBER_DECTION\CODE_2\ModelSave\dl_eig_reg_vs_snap_' + str(
 	# 	snap_i) + '_snr_' + str(SNRdB_i) + '_ant_' + str(number_antenna) + '_.h5'
@@ -165,11 +168,17 @@ acc_MDL=[]
 acc_MMSE=[]
 acc_AIC=[]
 for snap_i in Snap_range:
-	print('snap_i',snap_i)
-	acc,acc_mmse,acc_aic=MDL_MMSE(SNRdB_i, number_antenna, snap_i)
-	acc_MDL.append(acc)
-	acc_MMSE.append(acc_mmse)
-	acc_AIC.append(acc_aic)
+    print('snap_i', snap_i)
+    acc, acc_mmse, acc_aic = MDL_MMSE(SNRdB_i, number_antenna, snap_i)
+    acc_MDL.append(acc)
+    acc_MMSE.append(acc_mmse)
+    acc_AIC.append(acc_aic)
+    print("当前 Snapshots: ", snap_i, "AIC 准确率：", acc_aic, "MDL 准确率: ", acc)
+
+print("Snap_range 长度: ", len(Snap_range))
+print("acc_MDL 长度: ", len(acc_MDL))
+# print("acc_MMSE 长度: ", len(acc_MMSE))
+print("acc_AIC 长度: ", len(acc_AIC))
 
 
 
